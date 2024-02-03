@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            width: 50%;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Edit Data</h1>
+<!-- Party Form -->
+<form id="partyForm" method="post">
+    <label for="partyId">Party ID:</label>
+    <input type="text" id="partyId" name="partyId" required>
+
+    <label for="partyEnumId">Party Enum ID:</label>
+    <input type="text" id="partyEnumId" name="partyEnumId" required>
+
+    <button type="button" onclick="insertData('partyForm')">Insert Party Data</button>
+    <input type="hidden" name="formIdentifier" value="partyForm">
+</form>
+
+<!-- Person Form -->
+<form id="personForm" method="post">
+    <label for="personPartyId">Party ID:</label>
+    <input type="text" id="personPartyId" name="personPartyId" required>
+
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" required>
+
+    <label for="middleName">Middle Name:</label>
+    <input type="text" id="middleName" name="middleName">
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" required>
+
+
+
+    <!-- Add other fields for Person table -->
+
+    <button type="button" onclick="insertData('personForm')">Insert Person Data</button>
+    <input type="hidden" name="formIdentifier" value="personForm">
+</form>
+
+<!-- Product Form -->
+<form id="productForm" method="post">
+    <label for="productId">Product ID:</label>
+    <input type="text" id="productId" name="productId" required>
+
+    <label for="productPartyId">Party ID:</label>
+    <input type="text" id="productPartyId" name="productPartyId" required>
+
+    <label for="productName">Product Name:</label>
+    <input type="text" id="productName" name="productName" required>
+
+    <!-- Add other fields for Product table -->
+
+    <button type="button" onclick="insertData('productForm')">Insert Product Data</button>
+    <input type="hidden" name="formIdentifier" value="productForm">
+</form>
+
+<!-- Order Header Form -->
+<form id="orderHeaderForm" method="post">
+    <label for="orderId">Order ID:</label>
+    <input type="text" id="orderId" name="orderId" required>
+
+    <label for="orderName">Order Name:</label>
+    <input type="text" id="orderName" name="orderName">
+
+    <!-- Add other fields for Order Header table -->
+
+    <button type="button" onclick="insertData('orderHeaderForm')">Insert Order Header Data</button>
+    <input type="hidden" name="formIdentifier" value="orderHeaderForm">
+</form>
+
+<!-- Order Item Form -->
+<form id="orderItemForm" method="post">
+    <label for="orderItemOrderId">Order ID:</label>
+    <input type="text" id="orderItemOrderId" name="orderItemOrderId" required>
+
+    <label for="orderItemSeqId">Order Item Seq ID:</label>
+    <input type="text" id="orderItemSeqId" name="orderItemSeqId" required>
+
+    <label for="orderItemProductId">Product ID:</label>
+    <input type="text" id="orderItemProductId" name="orderItemProductId" required>
+
+    <!-- Add other fields for Order Item table -->
+
+    <button type="button" onclick="insertData('orderItemForm')">Insert Order Item Data</button>
+    <input type="hidden" name="formIdentifier" value="orderItemForm">
+</form>
+
+<script>
+    async function insertData(formId) {
+        const formData = new FormData(document.getElementById(formId));
+
+        try {
+            const response = await fetch('insert.php', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                alert('Data inserted successfully!');
+                // You can redirect to the main page or perform other actions as needed
+            } else {
+                alert('Failed to insert data.');
+            }
+        } catch (error) {
+            console.error('Error inserting data:', error);
+        }
+    }
+</script>
+
+</body>
+</html>

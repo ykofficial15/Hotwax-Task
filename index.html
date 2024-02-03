@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .edit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Data Display</h1>
+
+<div id="party">
+    <h2>Party Data <button class="edit-btn" onclick="goToEdit('party')">Edit</button></h2>
+    <table id="partyTable"></table>
+</div>
+
+<div id="person">
+    <h2>Person Data <button class="edit-btn" onclick="goToEdit('person')">Edit</button></h2>
+    <table id="personTable"></table>
+</div>
+
+<div id="product">
+    <h2>Product Data <button class="edit-btn" onclick="goToEdit('product')">Edit</button></h2>
+    <table id="productTable"></table>
+</div>
+
+<div id="orderHeader">
+    <h2>Order Header Data <button class="edit-btn" onclick="goToEdit('orderHeader')">Edit</button></h2>
+    <table id="orderHeaderTable"></table>
+</div>
+
+<div id="orderItem">
+    <h2>Order Item Data <button class="edit-btn" onclick="goToEdit('orderItem')">Edit</button></h2>
+    <table id="orderItemTable"></table>
+</div>
+
+<script>
+    async function fetchData(apiUrl, tableName) {
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            displayData(data, tableName);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    function displayData(data, tableName) {
+        const table = document.getElementById(`${tableName}Table`);
+        table.innerHTML = ''; // Clear existing data
+
+        if (data.length === 0) {
+            table.innerHTML = '<p>No data available</p>';
+            return;
+        }
+
+        // Create table headers
+        const headers = Object.keys(data[0]);
+        const headerRow = table.insertRow();
+        headers.forEach(header => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            headerRow.appendChild(th);
+        });
+
+        // Populate table with data
+        data.forEach(rowData => {
+            const row = table.insertRow();
+            headers.forEach(header => {
+                const cell = row.insertCell();
+                cell.textContent = rowData[header];
+            });
+        });
+    }
+
+    // Fetch data for each table
+    fetchData('party_api.php', 'party');
+    fetchData('person_api.php', 'person');
+    fetchData('product_api.php', 'product');
+    fetchData('order_header_api.php', 'orderHeader');
+    fetchData('order_item_api.php', 'orderItem');
+
+    function goToEdit(tableName) {
+        window.location.href = `edit.html?table=${tableName}`;
+    }
+</script>
+
+</body>
+</html>
